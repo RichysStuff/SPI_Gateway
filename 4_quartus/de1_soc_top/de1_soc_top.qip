@@ -1,0 +1,24 @@
+## -----------------------------------------------------------------------------
+## Filename: de1_soc_top.qip
+## Author  : M. Pichler
+## Date    : 18.12.2015
+## Content : Toplevel IP-File
+## -----------------------------------------------------------------------------
+
+# from HDL Designer
+# -----------------------------------------------------------------------------
+## - project_lib 
+set_global_assignment -name SEARCH_PATH ../../2_vhdl
+set_global_assignment -name VHDL_FILE ip/rsync.vhd
+set_global_assignment -name VHDL_FILE ip/isync.vhd
+set_global_assignment -name VHDL_FILE ip/bin2seg7.vhd
+set_global_assignment -name VHDL_FILE ip/bin2bcd_pkg.vhd
+
+set_global_assignment -name VHDL_FILE counter.vhd
+
+set_global_assignment -name VHDL_FILE de1_soc_pkg.vhd
+set_global_assignment -name VHDL_FILE de1_soc_top.vhd
+
+# Timing Constraints
+# -----------------------------------------------------------------------------
+set_global_assignment -name SDC_FILE  de1_soc_top.sdc
