@@ -80,6 +80,18 @@ package gateway_pkg is
 	end component buffer;
 
 	component display is port(
+		clk    : in  std_ulogic; -- clock
+		irst_n : in  std_ulogic; -- asynchronous reset, active low
+		
+		data_valid_in : in std_ulogic; -- error in data
+		display_mode_in   : in std_ulogic;  -- output mode
+        display_pattern_in : in std_ulogic_vector(7 downto 0) -- current input pattern
+        display_rx_in : in std_ulogic_vector (7 downto 0) -- data from RX Buffer
+		
+		7_seg_0_out : out std_ulogic_vector(6 downto 0) -- 7 segment 0
+        7_seg_1_out : out std_ulogic_vector(6 downto 0) -- 7 segment 1
+        7_seg_2_out : out std_ulogic_vector(6 downto 0) -- 7 segment 2
+        7_seg_3_out : out std_ulogic_vector(6 downto 0) -- 7 segment 3
 
 	);
 	end component display;

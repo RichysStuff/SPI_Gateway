@@ -8,22 +8,22 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity receiver is
+entity display is
 	port(
 		clk    : in  std_ulogic; -- clock
 		irst_n : in  std_ulogic; -- asynchronous reset, active low
-		error : in std_ulogic; -- error in data
-		mode   : in std_ulogic;  -- output mode
-        pattern : in std_ulogic_vector(7 downto 0) -- current input pattern
-        rx_buffer : in std_ulogic_vector (7 downto 0) -- data from RX Buffer
-		data_out_1 : out std_ulogic_vector(6 downto 0) 
-        data_out_2 : out std_ulogic_vector(6 downto 0) 
-        display_mode : out std_ulogic_vector(6 downto 0) 
-        display_error : out std_ulogic_vector(6 downto 0)
+		data_valid_in : in std_ulogic; -- error in data
+		display_mode_in   : in std_ulogic;  -- output mode
+        display_pattern_in : in std_ulogic_vector(7 downto 0) -- current input pattern
+        display_rx_in : in std_ulogic_vector (7 downto 0) -- data from RX Buffer
+		7_seg_0_out : out std_ulogic_vector(6 downto 0) -- 7 segment 0
+        7_seg_1_out : out std_ulogic_vector(6 downto 0) -- 7 segment 1
+        7_seg_2_out : out std_ulogic_vector(6 downto 0) -- 7 segment 2
+        7_seg_3_out : out std_ulogic_vector(6 downto 0) -- 7 segment 3
 	);
-end receiver;
+end display;
 
-architecture rtl of receiver is
+architecture rtl of display is
 	signal rst_reg    : std_ulogic_vector(1 downto 0);
 	
     -- 7-Seg Values                                   gfedcba
@@ -77,9 +77,8 @@ architecture rtl of receiver is
 		return oseg;
 	end function;
 
-    type t_oseg is array(integer range <>) of std_ulogic_vector(6 downto 0);
-
-    signal oseg : t_oseg(1 downto 0);
+    signal lower_seg : std_ulogic_vector(6 downto 0);
+    signal higher_seg : std_ulogic_vector(6 downto 0);
     signal omode : std_ulogic_vector(6 downto 0);
     signal oerror : std_ulogic_vector(6 downto 0);
 begin
@@ -99,7 +98,7 @@ begin
         if irst_n = '0' then
 			omode <= C_Blank; 
 		elsif rising_edge(clk) then
-			if mode = '0' then
+			if display_mode_in = '0' then
                 omode <= C_B;
             else
                 omode <= C_P;
@@ -113,7 +112,7 @@ begin
         if irst_n = '0' then
 			oerror <= C_Blank; 
 		elsif rising_edge(clk) then
-			if error = '0' then
+			if data_valid_in = '0' then
                 oerror <= C_Blank;
             else
                 oerror <= C_E;
@@ -127,19 +126,19 @@ begin
         if rst = rst_val then
             
         elsif rising_edge(clk) then
-            if mode = '1' then
-                oseg(0) <= f_bin2seg(pattern(3 downto 0));
-                oseg(1) <= f_bin2seg(pattern(7 downto 4));
+            if display_mode_in = '1' then
+                lower_seg <= f_bin2seg(display_pattern_in(3 downto 0));
+                higher_seg <= f_bin2seg(display_pattern_in(7 downto 4));
             else
-                oseg(0) <= f_bin2seg(rx_buffer(3 downto 0));
-                oseg(1) <= f_bin2seg(rx_buffer(7 downto 4));
+                lower_seg <= f_bin2seg(display_rx_in(3 downto 0));
+                higher_seg <= f_bin2seg(display_rx_in(7 downto 4));
             end if;            
         end if;
     end process p_data;
 	
-	data_out_1 <= oseg(0);
-    data_out_2 <= oseg(1);
-    display_mode <= omode;
-    display_error <= oerror;
+	7_seg_0_out <= lower_seg;
+    7_seg_1_out <= higher_seg;
+    7_seg_2_out <= omode;
+    7_seg_3_out <= oerror;
 	
 end rtl;
