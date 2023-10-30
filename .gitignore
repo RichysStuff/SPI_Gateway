@@ -1,0 +1,55 @@
+# Quartus-specific ignores
+*.rpt
+*.summary
+*.smsg
+*.done
+*.qpf
+*.qws
+*.qws.lock
+*.sof
+db/
+incremental_db/
+output_files/
+simulation/
+.cmp/
+*.tcl
+*_log.txt
+
+# Questa/VHDL specific ignores
+*.mti
+*.do
+*.dll
+*.so
+*.dylib
+*.swp
+*.o
+*.obj
+*.dll
+*.zip
+*.dat
+*.snps
+*.wlf
+*.log
+*.history
+*.key
+*.bak
+*.dsn
+*.pvl
+*.pvl3
+*.log
+*.bak
+*.wlf
+*.sqlite3
+
+# Compiled files
+work/
+vsim.wlf
+transcript
+
+# Temporary files
+*.bak
+*.swp
+
+# Simulation Output
+simvision/
+simulation/

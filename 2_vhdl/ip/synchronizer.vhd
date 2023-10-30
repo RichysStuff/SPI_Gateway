@@ -13,11 +13,14 @@ entity synchronizer is
 	port(
 		clk     : in  std_ulogic; -- clock
 		rst_n   : in  std_ulogic; -- asynchronous reset
+		
 		slide_switches_in : in  std_ulogic_vector(9 downto 0); -- asynchronous inputs
-		buttons_in : in std_ulogic_vector(3 downto 0) -- asynchronous inputs
-		slide_switches_out : out std_ulogic_vector(9 downto 0);
-		buttons_out: out std_ulogic_vector(3 downto 0)
-
+		buttons_in : in std_ulogic_vector(3 downto 0); -- asynchronous inputs
+		
+		send_data_out : out std_ulogic;
+		send_faulty_data_out : out std_ulogic;
+		pattern_out : out std_ulogic_vector(7 downto 0);
+		display_mode_out : out std_ulogic -- 0 is rx buffer; 1 is pattern
 	);
 end synchronizer;
 
@@ -37,6 +40,11 @@ begin
 			slide_switches_2 <= (others => '0');
 			buttons_1 <= (others => '0');
 			buttons_2 <= (others => '0');
+
+			send_data_out <= 0;
+			send_faulty_data_out <= 0;
+			pattern_out <= (others => '0');
+			display_mode_out <= 0;
 
 		elsif rising_edge(clk) then
 			-- synchronize with two flipflops
