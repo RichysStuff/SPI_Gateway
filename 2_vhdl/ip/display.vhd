@@ -128,7 +128,8 @@ begin
     p_data: process(clk, irst_n)
     begin
         if irst_n = '0' then
-            
+            lower_seg <= C_Blank;
+            higher_seg <= C_Blank;
         elsif rising_edge(clk) then
             if display_mode_in = '1' then
                 lower_seg <= f_bin2seg(display_pattern_in(3 downto 0));
