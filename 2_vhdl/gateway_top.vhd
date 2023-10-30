@@ -65,7 +65,7 @@ architecture struct of gateway is
 	-- receiver signals:
 	signal 	data_received : std_ulogic; -- 
 	signal 	data_valid   : std_ulogic;  --
-	signal 	data_rx : std_ulogic_vector(7 downto 0) 
+	signal 	data_rx : std_ulogic_vector(7 downto 0);
 
 	-- buffer_block signals:
 	signal data_rx_ready : std_ulogic; -- 
@@ -98,10 +98,10 @@ begin
 			clk=> clk,
 			rst_n => rst_n,
 			
-			slide_switches_in => sw;
-			buttons_in => key;
+			slide_switches_in => sw,
+			buttons_in => key,
 			
-			send_data_out => send_data;
+			send_data_out => send_data,
 			send_faulty_data_out => send_faulty_data,
 			pattern_out => pattern,
 			display_mode_out => display_mode 
@@ -116,7 +116,7 @@ begin
 			
 			send_data_in => send_data, 
 			emit_faulty_data_in => send_faulty_data,
-			data_tx_in => data_tx,
+			data_tx_in => buffer_tx,
 		
 			spi_cs_out => spi_cs_out,
 			spi_clk_out => spi_clk_out,
@@ -138,8 +138,21 @@ begin
 			data_rx_out => data_rx 
 		);
 	
+	-- show rx buffer or pattern on displays
 	display_1 : entity work.display
 	port map(
+		clk=>clk,
+		irst_n=>rst_n,
+
+		data_valid_in=>data_valid,
+		display_mode_in=>display_mode,
+        display_pattern_in=>pattern,
+        display_rx_in=>buffer_rx_display,
+
+		seg_0_out=>hex0,
+        seg_1_out=>hex1,
+        seg_2_out=>hex2,
+        seg_3_out=>hex3
 
 	);
 	
