@@ -24,20 +24,44 @@ entity receiver is
 end receiver;
 
 architecture rtl of receiver is
+	type fsm_state is (IDLE, RECEIVE);
 	signal rst_reg    : std_ulogic_vector(1 downto 0);
+	signal rx_buffer : std_ulogic_vector(data_rx_out'range);
+	signal current_state : fsm_state;
+	signal next_state : fsm_state;
+
 begin
-	
-	
-	p_reset : process(irst_n, clk)
+
+	p_fsm : process(irst_n, clk)
 	begin
 		if irst_n = '0' then
-			rst_reg <= (others => '0'); -- assert asynchronous
-			data_received_out <= '0';
-			data_valid_out <= '0';
-			data_rx_out <= (others => '0');
+			rx_buffer <= (others => '0');
+
 		elsif rising_edge(clk) then
-			rst_reg <= rst_reg(0) & '1'; -- deassert synchronous
+			case current_state is
+			
+				when IDLE =>
+					if falling_edge(spi_cs_in) then
+						next_state <= RECEIVE;
+					else
+						next_state <= current_state;
+					end if;
+
+
+				when RECEIVE =>
+					if rising_edge(spi_cs_in) then
+						next_state <= IDLE;
+					else
+						next_state <= current_state;
+					end if;
+
+				when others =>
+					next_state <= IDLE;
+
+			end case;
 		end if;
-	end process p_reset;
+
+	end process p_fsm;
+
 	
 end rtl;
