@@ -57,28 +57,25 @@ architecture struct of gateway is
 	signal rst_n         : std_ulogic;
 
 	-- synchronizer signals
-	signal send_data : out std_ulogic;
-	signal send_faulty_data : out std_ulogic;
-	signal pattern : out std_ulogic_vector(7 downto 0);
-	signal display_mode : out std_ulogic;
+	signal send_data : std_ulogic;
+	signal send_faulty_data : std_ulogic;
+	signal pattern : std_ulogic_vector(7 downto 0);
+	signal display_mode : std_ulogic;
 
 	-- receiver signals:
-	signal 	data_received : out std_ulogic; -- 
-	signal 	data_valid   : out std_ulogic;  --
-	signal 	data_rx : out std_ulogic_vector(7 downto 0) 
+	signal 	data_received : std_ulogic; -- 
+	signal 	data_valid   : std_ulogic;  --
+	signal 	data_rx : std_ulogic_vector(7 downto 0) 
 
-	-- Pulses:
-	signal run_p         : std_ulogic;
-	signal load_p        : std_ulogic;
-	signal setmax_p      : std_ulogic;
-	-- Counter control:
-	signal cnt_din       : std_ulogic_vector(5 downto 0);
-	signal cnt_up        : std_ulogic;
-	signal cnt_cont      : std_ulogic;
-	signal cnt_fast      : std_ulogic;
-	signal cnt_dec       : std_ulogic;
-	signal max_value     : std_ulogic_vector(5 downto 0);
-	signal cnt_value     : std_ulogic_vector(5 downto 0);
+	-- buffer_block signals:
+	signal data_rx_ready : std_ulogic; -- 
+	signal buffer_rx : std_ulogic_vector(7 downto 0);  --
+	signal buffer_pattern : std_ulogic_vector(7 downto 0); 
+
+	signal buffer_tx : std_ulogic_vector(7 downto 0);
+	signal buffer_rx_display std_ulogic_vector()
+    signal buffer_pattern : std_ulogic_vector(7 downto 0);
+
 	
 begin
 	

@@ -65,7 +65,7 @@ package gateway_pkg is
 	);
 	end component receiver;
 
-	component buffer is port(
+	component buffer_block is port(
 		clk    : in  std_ulogic; -- clock
 		irst_n : in  std_ulogic; -- asynchronous reset, active low
 
@@ -77,7 +77,7 @@ package gateway_pkg is
         buffer_pattern_out : out std_ulogic_vector(7 downto 0);
         buffer_rx_out : out std_ulogic_vector(7 downto 0)  
 	);
-	end component buffer;
+	end component buffer_block;
 
 	component display is port(
 
