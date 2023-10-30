@@ -32,9 +32,9 @@ begin
 	begin
 		if irst_n = '0' then
 			rst_reg <= (others => '0'); -- assert asynchronous
-			spi_cs_out <= (others => '0');
-			spi_clk_out <= (others => '0');
-			spi_data_out <= (others => '0');
+			spi_cs_out <= '1';
+			spi_clk_out <= '0';
+			spi_data_out <= '0';
 
 		elsif rising_edge(clk) then
 			rst_reg <= rst_reg(0) & '1'; -- deassert synchronous

@@ -32,11 +32,12 @@ begin
 	begin
 		if irst_n = '0' then
 			rst_reg <= (others => '0'); -- assert asynchronous
+			data_received_out <= '0';
+			data_valid_out <= '0';
+			data_rx_out <= (others => '0');
 		elsif rising_edge(clk) then
 			rst_reg <= rst_reg(0) & '1'; -- deassert synchronous
 		end if;
 	end process p_reset;
-	
-	data_out <= (others => '0');
 	
 end rtl;
