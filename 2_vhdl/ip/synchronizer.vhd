@@ -18,7 +18,9 @@ entity synchronizer is
 		buttons_in : in std_ulogic_vector(3 downto 0); -- asynchronous inputs
 		
 		send_data_out : out std_ulogic;
-		send_faulty_data_out : out std_ulogic;
+		send_one_faulty_bit_out : out std_ulogic;
+		send_two_faulty_bits_out : out std_ulogic;
+		select_tx_data_source_out : out std_ulogic; 
 		pattern_out : out std_ulogic_vector(7 downto 0);
 		display_mode_out : out std_ulogic -- 0 is rx buffer; 1 is pattern
 	);
@@ -42,7 +44,9 @@ begin
 			buttons_2 <= (others => '0');
 
 			send_data_out <= '0';
-			send_faulty_data_out <= '0';
+			send_one_faulty_bit_out <= '0';
+			send_two_faulty_bits_out <= '0';
+			select_tx_data_source_out <= '0';
 			pattern_out <= (others => '0');
 			display_mode_out <= '0';
 
@@ -56,5 +60,7 @@ begin
 			buttons_2 <= buttons_1;
 		end if;
 	end process p_sync;
+
+
 	
 end rtl;

@@ -25,12 +25,14 @@ package gateway_pkg is
 		port(
 			clk     : in  std_ulogic; -- clock
 			rst_n   : in  std_ulogic; -- asynchronous reset
-			
+		
 			slide_switches_in : in  std_ulogic_vector(9 downto 0); -- asynchronous inputs
 			buttons_in : in std_ulogic_vector(3 downto 0); -- asynchronous inputs
-			
+		
 			send_data_out : out std_ulogic;
-			send_faulty_data_out : out std_ulogic;
+			send_one_faulty_bit_out : out std_ulogic;
+			send_two_faulty_bits_out : out std_ulogic;
+			select_tx_data_source_out : out std_ulogic; 
 			pattern_out : out std_ulogic_vector(7 downto 0);
 			display_mode_out : out std_ulogic -- 0 is rx buffer; 1 is pattern
 	);
@@ -38,16 +40,18 @@ package gateway_pkg is
 	
 	component transmitter is
 		port(
-		clk    : in  std_ulogic; -- clock
-		irst_n : in  std_ulogic; -- asynchronous reset, active low
-
-		send_data_in : in std_ulogic; -- 
-		emit_faulty_data_in : in std_ulogic;  --
-		data_tx_in : in std_ulogic_vector(7 downto 0);
-		
-		spi_cs_out : out std_ulogic;
-		spi_clk_out : out std_ulogic;
-		spi_data_out : out std_ulogic
+			clk    : in  std_ulogic; -- clock
+			irst_n : in  std_ulogic; -- asynchronous reset, active low
+	
+			send_data_in : in std_ulogic; -- 
+			send_one_faulty_bit_in : in std_ulogic;
+			send_two_faulty_bits_in : in std_ulogic;
+	
+			data_tx_in : in std_ulogic_vector(7 downto 0);
+			
+			spi_cs_out : out std_ulogic;
+			spi_clk_out : out std_ulogic;
+			spi_data_out : out std_ulogic 
 
 	);
 	end component transmitter;
@@ -73,6 +77,7 @@ package gateway_pkg is
 		data_rx_ready_in : in std_ulogic; -- 
 		buffer_rx_in : in std_ulogic_vector(7 downto 0);  --
 		buffer_pattern_in : in std_ulogic_vector(7 downto 0); 
+		source_selection_in : in std_logic; -- 0 buffer ; 1 pattern
 
 		buffer_tx_out : out std_ulogic_vector(7 downto 0);
         buffer_pattern_out : out std_ulogic_vector(7 downto 0);

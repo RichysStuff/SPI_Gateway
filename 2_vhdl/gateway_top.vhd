@@ -58,7 +58,9 @@ architecture struct of gateway is
 
 	-- synchronizer signals
 	signal send_data : std_ulogic;
-	signal send_faulty_data : std_ulogic;
+	signal send_one_faulty_bit : std_ulogic;
+	signal send_two_faulty_bits : std_ulogic;
+	signal select_tx_data_source : std_ulogic; 
 	signal pattern : std_ulogic_vector(7 downto 0);
 	signal display_mode : std_ulogic;
 
@@ -102,7 +104,9 @@ begin
 			buttons_in => key,
 			
 			send_data_out => send_data,
-			send_faulty_data_out => send_faulty_data,
+			send_one_faulty_bit_out => send_one_faulty_bit,
+			send_two_faulty_bits_out => send_two_faulty_bits,
+			select_tx_data_source_out => select_tx_data_source,
 			pattern_out => pattern,
 			display_mode_out => display_mode 
 		); 
@@ -115,7 +119,8 @@ begin
 			irst_n => rst_n,
 			
 			send_data_in => send_data, 
-			emit_faulty_data_in => send_faulty_data,
+			send_one_faulty_bit_in => send_one_faulty_bit,
+			send_two_faulty_bits_in => send_two_faulty_bits,
 			data_tx_in => buffer_tx,
 		
 			spi_cs_out => spi_cs_out,
@@ -154,6 +159,21 @@ begin
         seg_2_out=>hex2,
         seg_3_out=>hex3
 
+	);
+
+	buffer_block_1 : entity work.buffer_block
+	port map(
+		clk => clk,
+		irst_n => rst_n,
+
+		data_rx_ready_in => data_valid, 
+		buffer_rx_in => buffer_rx,
+		buffer_pattern_in => pattern, 
+		source_selection_in => select_tx_data_source,
+
+		buffer_tx_out => buffer_tx,
+        buffer_pattern_out => buffer_pattern,
+        buffer_rx_out => buffer_rx_display
 	);
 	
 end architecture struct;

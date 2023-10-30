@@ -14,7 +14,9 @@ entity transmitter is
 		irst_n : in  std_ulogic; -- asynchronous reset, active low
 
 		send_data_in : in std_ulogic; -- 
-		emit_faulty_data_in : in std_ulogic;  --
+		send_one_faulty_bit_in : in std_ulogic;
+		send_two_faulty_bits_in : in std_ulogic;
+
 		data_tx_in : in std_ulogic_vector(7 downto 0);
 		
 		spi_cs_out : out std_ulogic;

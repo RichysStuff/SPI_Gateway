@@ -16,6 +16,7 @@ entity buffer_block is
 		data_rx_ready_in : in std_ulogic; -- 
 		buffer_rx_in : in std_ulogic_vector(7 downto 0);  --
 		buffer_pattern_in : in std_ulogic_vector(7 downto 0); 
+		source_selection_in : in std_logic; -- 0 buffer ; 1 pattern
 
 		buffer_tx_out : out std_ulogic_vector(7 downto 0);
         buffer_pattern_out : out std_ulogic_vector(7 downto 0);
