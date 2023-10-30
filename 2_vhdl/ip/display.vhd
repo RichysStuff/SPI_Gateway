@@ -87,10 +87,6 @@ begin
 	begin
 		if irst_n = '0' then
 			rst_reg <= (others => '0'); -- assert asynchronous
-            lower_seg <= C_Blank;
-            higher_seg <= C_Blank;
-            omode <= C_Blank;
-            oerror <= C_Blank;
 		elsif rising_edge(clk) then
 			rst_reg <= rst_reg(0) & '1'; -- deassert synchronous
 		end if;
