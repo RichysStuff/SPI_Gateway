@@ -9,6 +9,14 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+-- Keys         : 3   send pattern
+--                2   send pattern with one error
+--                1   send pattern with two errors
+--
+-- Switches     : 9   select source : 1=pattern / 0=buffer
+--                8   select display: 1=pattern / 0=received data
+--                7-0 pattern
+
 entity synchronizer is
 	port(
 		clk     : in  std_ulogic; -- clock
@@ -43,13 +51,6 @@ begin
 			buttons_1 <= (others => '0');
 			buttons_2 <= (others => '0');
 
-			send_data_out <= '0';
-			send_one_faulty_bit_out <= '0';
-			send_two_faulty_bits_out <= '0';
-			select_tx_data_source_out <= '0';
-			pattern_out <= (others => '0');
-			display_mode_out <= '0';
-
 		elsif rising_edge(clk) then
 			-- synchronize with two flipflops
 			
@@ -61,6 +62,12 @@ begin
 		end if;
 	end process p_sync;
 
+	send_data_out <= buttons_2(1);
+	send_one_faulty_bit_out <= buttons_2(2);
+	send_two_faulty_bits_out <= buttons_2(3);
 
-	
+	select_tx_data_source_out <= slide_switches_2(9);
+	display_mode_out <= slide_switches_2(8);
+	pattern_out <= slide_switches_2(7 downto 0);
+
 end rtl;
