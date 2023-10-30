@@ -22,33 +22,77 @@ package gateway_pkg is
 	
 	-- Component Declarations
 	component synchronizer is
-			port(
-				clk     : in  std_ulogic; -- clock
-				rst_n   : in  std_ulogic; -- asynchronous reset
-				slide_switches_in : in  std_ulogic_vector(9 downto 0); -- asynchronous inputs
-				buttons_in : in std_ulogic_vector(3 downto 0) -- asynchronous inputs
-				slide_switches_out : out std_ulogic_vector(9 downto 0);
-				buttons_out: out std_ulogic_vector(3 downto 0);
-			);
+		port(
+			clk     : in  std_ulogic; -- clock
+			rst_n   : in  std_ulogic; -- asynchronous reset
+			
+			slide_switches_in : in  std_ulogic_vector(9 downto 0); -- asynchronous inputs
+			buttons_in : in std_ulogic_vector(3 downto 0); -- asynchronous inputs
+			
+			send_data_out : out std_ulogic;
+			send_faulty_data_out : out std_ulogic;
+			pattern_out : out std_ulogic_vector(7 downto 0);
+			display_mode_out : out std_ulogic -- 0 is rx buffer; 1 is pattern
+	);
 	end component synchronizer;
 	
 	component transmitter is
 		port(
-		clk    : in  std_ulogic; -- clock
+			clk    : in  std_ulogic; -- clock
 		irst_n : in  std_ulogic; -- asynchronous reset, active low
-		send_data : in std_ulogic; -- 
-		emit_faulty_data   : in std_ulogic;  --
-		spi_data_out : out std_ulogic 
+
+		send_data_in : in std_ulogic; -- 
+		emit_faulty_data_in : in std_ulogic;  --
+		data_tx_in : in std_ulogic_vector(7 downto 0);
+		
+		spi_cs_out : out std_ulogic;
+		spi_clk_out : out std_ulogic;
+		spi_data_out : out std_ulogic
 	);
 	end component transmitter;
 	
-	component receiver port(
+	component receiver is port(
 		clk    : in  std_ulogic; -- clock
 		irst_n : in  std_ulogic; -- asynchronous reset, active low
-		data_received : in std_ulogic; -- 
-		data_valid   : in std_ulogic;  --
-		data_out : out std_ulogic_vector(7 downto 0) 
+
+		spi_data_in : in std_ulogic;
+		spi_cs_in : in std_ulogic;
+		spi_clk_in : in std_logic;
+
+		data_received_out : out std_ulogic; -- 
+		data_valid_out   : out std_ulogic;  --
+		data_rx_out : out std_ulogic_vector(7 downto 0) 
 	);
 	end component receiver;
+
+	component buffer is port(
+		clk    : in  std_ulogic; -- clock
+		irst_n : in  std_ulogic; -- asynchronous reset, active low
+
+		data_rx_ready_in : in std_ulogic; -- 
+		buffer_rx_in : in std_ulogic_vector(7 downto 0);  --
+		buffer_pattern_in : in std_ulogic_vector(7 downto 0); 
+
+		buffer_tx_out : out std_ulogic_vector(7 downto 0);
+        buffer_pattern_out : out std_ulogic_vector(7 downto 0);
+        buffer_rx_out : out std_ulogic_vector(7 downto 0)  
+	);
+	end component buffer;
+
+	component display is port(
+
+	);
+	end component display;
+	
+	component r_sync is generic (
+		g_mode : natural := 0
+	);
+	port(
+		clk    : in  std_ulogic; -- clock
+		irst_n : in  std_ulogic; -- asynchronous reset, active low
+		orst_n : out std_ulogic; -- partially/full synchronized reset, active low
+		orst   : out std_ulogic  -- partially/full synchronized reset, active high
+	);
+	end component r_sync;
 
 end package gateway_pkg;
