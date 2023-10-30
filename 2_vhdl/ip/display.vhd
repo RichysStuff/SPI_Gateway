@@ -14,12 +14,12 @@ entity display is
 		irst_n : in  std_ulogic; -- asynchronous reset, active low
 		data_valid_in : in std_ulogic; -- error in data
 		display_mode_in   : in std_ulogic;  -- output mode
-        display_pattern_in : in std_ulogic_vector(7 downto 0) -- current input pattern
-        display_rx_in : in std_ulogic_vector (7 downto 0) -- data from RX Buffer
-		7_seg_0_out : out std_ulogic_vector(6 downto 0) -- 7 segment 0
-        7_seg_1_out : out std_ulogic_vector(6 downto 0) -- 7 segment 1
-        7_seg_2_out : out std_ulogic_vector(6 downto 0) -- 7 segment 2
-        7_seg_3_out : out std_ulogic_vector(6 downto 0) -- 7 segment 3
+        display_pattern_in : in std_ulogic_vector(7 downto 0); -- current input pattern
+        display_rx_in : in std_ulogic_vector (7 downto 0); -- data from RX Buffer
+		seg_0_out : out std_ulogic_vector(6 downto 0); -- 7 segment 0
+        seg_1_out : out std_ulogic_vector(6 downto 0); -- 7 segment 1
+        seg_2_out : out std_ulogic_vector(6 downto 0); -- 7 segment 2
+        seg_3_out : out std_ulogic_vector(6 downto 0) -- 7 segment 3
 	);
 end display;
 
@@ -48,7 +48,7 @@ architecture rtl of display is
 
     --bin2seg conversion function
     function f_bin2seg (
-			ibin          : std_ulogic_vector(4 downto 0);
+			ibin          : std_ulogic_vector(3 downto 0)
 		) return std_ulogic_vector is
 		variable oseg : std_ulogic_vector(6 downto 0);
 	begin
@@ -123,7 +123,7 @@ begin
     --data output
     p_data: process(clk, irst_n)
     begin
-        if rst = rst_val then
+        if irst_n = '0' then
             
         elsif rising_edge(clk) then
             if display_mode_in = '1' then
@@ -136,9 +136,9 @@ begin
         end if;
     end process p_data;
 	
-	7_seg_0_out <= lower_seg;
-    7_seg_1_out <= higher_seg;
-    7_seg_2_out <= omode;
-    7_seg_3_out <= oerror;
+	seg_0_out <= lower_seg;
+    seg_1_out <= higher_seg;
+    seg_2_out <= omode;
+    seg_3_out <= oerror;
 	
 end rtl;
