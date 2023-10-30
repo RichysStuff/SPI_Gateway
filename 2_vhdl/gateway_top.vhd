@@ -71,28 +71,14 @@ architecture struct of gateway is
 	signal data_rx_ready : std_ulogic; -- 
 	signal buffer_rx : std_ulogic_vector(7 downto 0);  --
 	signal buffer_pattern : std_ulogic_vector(7 downto 0); 
-
+	signal buffer_rx_display : std_ulogic_vector(7 downto 0);
 	signal buffer_tx : std_ulogic_vector(7 downto 0);
-	signal buffer_rx_display std_ulogic_vector()
-    signal buffer_pattern : std_ulogic_vector(7 downto 0);
 
-	
 begin
 	
 	-- Wrapping between de1_soc and counter
 	-- system clock:
 	clk <= clk_50;
-	-- key:
-	run_p    <= key_pulse(1);        -- Start/Stop
-	load_p   <= key_pulse(2);        -- Load
-	setmax_p <= key_pulse(3);        -- Set Counter Maximum Value
-	-- sw:
-	cnt_din  <= sw_sync(5 downto 0); -- Load/Max Value
-	cnt_up   <= sw_sync(6);          -- Count Direction       :        0=down, 1=up
-	cnt_cont <= sw_sync(7);          -- Count Modus         :        0=single, 1=continous
-	cnt_fast <= sw_sync(8);          -- Count Speed         :        0=slow, 1=fast
-	cnt_dec  <= sw_sync(9);          -- Count Format         :        0=hex, 1=dec
-	
 	
 	-- synchronize the reset
 	rsync_1 : entity work.rsync
@@ -101,72 +87,60 @@ begin
 		)
 		port map (
 			clk    => clk,
-			irst_n => key(0),
+			irst_n => key(1),
 			orst_n => rst_n,
 			orst   => open
 		);
 	
-	-- edge detection of the keys
-	isync_2 : entity work.isync
-		generic map (
-			g_width => key'length,
-			g_inv   => 0,
-			g_mode  => 2 -- generate pulse on falling edge
-		)
+	-- synchronisation of all inputs and generating control signal for other blocks
+	synchronizer_1 : entity work.synchronizer
 		port map (
-			clk     => clk,
-			rst_n   => rst_n,
-			idata_a => key,
-			odata_s => key_pulse
+			clk=> clk,
+			rst_n => rst_n,
+			
+			slide_switches_in => sw;
+			buttons_in => key;
+			
+			send_data_out => send_data;
+			send_faulty_data_out => send_faulty_data,
+			pattern_out => pattern,
+			display_mode_out => display_mode 
 		); 
-	-- synchronization of the switches
-	isync_1 : entity work.isync
-		generic map (
-			g_width => sw'length,
-			g_inv   => 0,
-			g_mode  => 0
-		)
+
+
+	-- encode and send data 
+	transmitter_1 : entity work.transmitter
 		port map (
-			clk     => clk,
-			rst_n   => rst_n,
-			idata_a => sw,
-			odata_s => sw_sync
+			clk  => clk,
+			irst_n => rst_n,
+			
+			send_data_in => send_data, 
+			emit_faulty_data_in => send_faulty_data,
+			data_tx_in => data_tx,
+		
+			spi_cs_out => spi_cs_out,
+			spi_clk_out => spi_clk_out,
+			spi_data_out => spi_data_out 
 		); 
-	-- user design: here it is a counter
-	counter_1 : entity work.counter
-		port map (
-			clk      => clk,
-			rst_n    => rst_n,
-			run_p    => run_p,
-			load_p   => load_p,
-			setmax_p => setmax_p,
-			cnt_din  => cnt_din,
-			cnt_up   => cnt_up,
-			cnt_cont => cnt_cont,
-			cnt_fast => cnt_fast,
-			cnt_dec  => cnt_dec,
-			write_en => write_en,
-			data_reg => data_reg,
-			ctrl_reg => ctrl_reg,
-			ledr     => ledr
-		); 
-	-- conversion from binary to sevensegment (HEX/DEC)
-	bin2seg7_1 : entity work.bin2seg7
-		generic map (
-			g_clk_div => c_clk_div
-		)
-		port map (
-			clk       => clk,
-			rst_n     => rst_n,
-			wr_en     => write_en,
-			data_reg  => data_reg,
-			ctrl_reg  => ctrl_reg,
-			hex5      => hex5,
-			hex4      => hex4,
-			hex3      => hex3,
-			hex2      => hex2,
-			hex1      => hex1,
-			hex0      => hex0
+
+	-- receive and decode data
+	receiver_1 : entity work.receiver
+		port map(
+			clk  => clk,
+			irst_n => rst_n,
+
+			spi_data_in => spi_data_in,
+			spi_cs_in => spi_cs_in,
+			spi_clk_in => spi_clk_in,
+
+			data_received_out => data_received, 
+			data_valid_out => data_valid,
+			data_rx_out => data_rx 
 		);
+	
+	display_1 : entity work.display
+	port map(
+
+	);
 	
 end architecture struct;
