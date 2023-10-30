@@ -7,6 +7,11 @@
 *.qws
 *.qws.lock
 *.sof
+
+# Compilieren mit questa 
+*.opt
+*.ini
+
 db/
 incremental_db/
 output_files/
