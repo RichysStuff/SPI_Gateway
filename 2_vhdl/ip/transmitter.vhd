@@ -1,6 +1,6 @@
 -- -----------------------------------------------------------------------------
 -- Filename: transmitter.vhd
--- Author  : R. Wassmer
+-- Author  : R. Wassmer, D. Bachmann
 -- Date    : 2023.10.30
 -- Content : Transmit data over SPI protokoll 
 -- -----------------------------------------------------------------------------
