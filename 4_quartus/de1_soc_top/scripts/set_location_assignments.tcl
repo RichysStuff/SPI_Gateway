@@ -252,63 +252,52 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to sw[*]
 #-----------------------------------------------------
 # GPIO_0, GPIO_0 connect to D5M - 5M Pixel Camera
 #-----------------------------------------------------
-# set_location_assignment PIN_AC18                        -to d5m_PIXCLK
-# set_location_assignment PIN_Y17                         -to d5m_D[11]
-# set_location_assignment PIN_Y18                         -to d5m_D[10]
-# set_location_assignment PIN_AK16                        -to d5m_D[9]
-# set_location_assignment PIN_AK18                        -to d5m_D[8]
-# set_location_assignment PIN_AK19                        -to d5m_D[7]
-# set_location_assignment PIN_AJ19                        -to d5m_D[6]
-# set_location_assignment PIN_AJ17                        -to d5m_D[5]
-# set_location_assignment PIN_AJ16                        -to d5m_D[4]
-# set_location_assignment PIN_AH18                        -to d5m_D[3]
-# set_location_assignment PIN_AH17                        -to d5m_D[2]
-# set_location_assignment PIN_AG16                        -to d5m_D[1]
-# set_location_assignment PIN_AE16                        -to d5m_D[0]
-# set_location_assignment PIN_AA18                        -to d5m_XCLKIN
-# set_location_assignment PIN_AA19                        -to d5m_RESET_N
-# set_location_assignment PIN_AC20                        -to d5m_TRIGGER
-# set_location_assignment PIN_AH19                        -to d5m_STROBE
-# set_location_assignment PIN_AJ20                        -to d5m_LVAL
-# set_location_assignment PIN_AH20                        -to d5m_FVAL
-# set_location_assignment PIN_AK21                        -to d5m_SDATA
-# set_location_assignment PIN_AD19                        -to d5m_SCLK
-# set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to d5m_*
+# set_location_assignment PIN_AC18                        -to grayIn[0]
+# set_location_assignment PIN_Y17                         -to grayIn[1]
+# set_location_assignment PIN_AD17                         -to grayIn[2]
+# set_location_assignment PIN_Y18                        -to grayIn[3]
+# set_location_assignment PIN_AK16                       -to grayIn[4]
+# set_location_assignment PIN_AK18                        -to grayIn[5]
+# set_location_assignment PIN_AK19                        -to grayIn[6]
+# set_location_assignment PIN_AJ19                        -to grayIn[7]
+# set_location_assignment PIN_AJ17                        -to uart_rx
+set_location_assignment PIN_AJ16                        -to spi_cs_in
+set_location_assignment PIN_AH18                        -to spi_clk_in
+set_location_assignment PIN_AH17                        -to spi_data_in
+# set_location_assignment PIN_AG16                        -to SCL_in
+# set_location_assignment PIN_AE16                        -to SDA_in
+# set_location_assignment PIN_AF16                        -to OWR
+# set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to grayIn[*]
+# set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to uart_tx
+# set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to spi_*
+# set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to SCL_in
+# set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to SDA_in
+# set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to OWR
 
 #-----------------------------------------------------
 # GPIO_1, GPIO_1 connect to MTL - Multi-Touch LCD Panel
 #-----------------------------------------------------
-# set_location_assignment PIN_AA21                        -to mtl_dclk
-# set_location_assignment PIN_AC23                        -to mtl_r[0]
-# set_location_assignment PIN_AD24                        -to mtl_r[1]
-# set_location_assignment PIN_AE23                        -to mtl_r[2]
-# set_location_assignment PIN_AE24                        -to mtl_r[3]
-# set_location_assignment PIN_AF25                        -to mtl_r[4]
-# set_location_assignment PIN_AF26                        -to mtl_r[5]
-# set_location_assignment PIN_AG25                        -to mtl_r[6]
-# set_location_assignment PIN_AG26                        -to mtl_r[7]
-# set_location_assignment PIN_AH24                        -to mtl_g[0]
-# set_location_assignment PIN_AH27                        -to mtl_g[1]
-# set_location_assignment PIN_AJ27                        -to mtl_g[2]
-# set_location_assignment PIN_AK29                        -to mtl_g[3]
-# set_location_assignment PIN_AK28                        -to mtl_g[4]
-# set_location_assignment PIN_AK26                        -to mtl_g[5]
-# set_location_assignment PIN_AH25                        -to mtl_g[6]
-# set_location_assignment PIN_AJ25                        -to mtl_b[0]
-# set_location_assignment PIN_AJ24                        -to mtl_g[7]
-# set_location_assignment PIN_AK24                        -to mtl_b[1]
-# set_location_assignment PIN_AG23                        -to mtl_b[2]
-# set_location_assignment PIN_AK23                        -to mtl_b[3]
-# set_location_assignment PIN_AH23                        -to mtl_b[4]
-# set_location_assignment PIN_AK22                        -to mtl_b[5]
-# set_location_assignment PIN_AJ22                        -to mtl_b[6]
-# set_location_assignment PIN_AH22                        -to mtl_b[7]
-# set_location_assignment PIN_AF24                        -to mtl_hsd
-# set_location_assignment PIN_AF23                        -to mtl_vsd
-# set_location_assignment PIN_AE22                        -to mtl_touch_i2c_scl
-# set_location_assignment PIN_AD21                        -to mtl_touch_i2c_sda
-# set_location_assignment PIN_AA20                        -to mtl_touch_int_n
-# set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to mtl_*
+# set_location_assignment PIN_AA21                        -to grayOut[0]
+# set_location_assignment PIN_AC23                        -to grayOut[1]
+# set_location_assignment PIN_AD24                        -to grayOut[2]
+# set_location_assignment PIN_AE23                        -to grayOut[3]
+# set_location_assignment PIN_AE24                        -to grayOut[4]
+# set_location_assignment PIN_AF25                        -to grayOut[5]
+# set_location_assignment PIN_AF26                        -to grayOut[6]
+# set_location_assignment PIN_AG25                        -to grayOut[7]
+# set_location_assignment PIN_AG26                        -to uart_tx
+set_location_assignment PIN_AH24                        -to spi_cs_out
+set_location_assignment PIN_AH27                        -to spi_clk_out
+set_location_assignment PIN_AJ27                        -to spi_data_out
+# set_location_assignment PIN_AK29                        -to SCL_out
+# set_location_assignment PIN_AK28                        -to SDA_out
+# set_location_assignment PIN_AK26                        -to OWT
+# set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to grayOut[*]
+# set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to uart_rx
+# set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to spi_*
+# set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to SCL_out
+# set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to SDA_out
+# set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to OWT
 
 #-----------------------------------------------------
 # End of pin assignments
