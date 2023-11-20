@@ -112,7 +112,7 @@ begin
         if irst_n = '0' then
 			oerror <= C_Blank; 
 		elsif rising_edge(clk) then
-			if data_valid_in = '0' then
+			if data_valid_in = '1' then
                 oerror <= C_Blank;
             else
                 oerror <= C_E;
