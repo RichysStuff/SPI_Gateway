@@ -100,7 +100,8 @@ begin
 
 					if n_received_bits = 9 then
 						-- calculate even parity bit
-						v_parity_target := xor rx_buffer(8 downto 1); -- exclude real parity bit
+						-- v_parity_target := xor rx_buffer(8 downto 1); -- exclude real parity bit
+						v_parity_target := rx_buffer(8) xor rx_buffer(7) xor rx_buffer(6) xor rx_buffer(5) xor rx_buffer(4) xor  rx_buffer(3) xor  rx_buffer(2) xor rx_buffer(1); -- exclude real parity bit
 							
 						-- check if message has parity error. sync_spi_data_in(1) is received parity bit
 						if rx_buffer(0) /= v_parity_target then

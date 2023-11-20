@@ -66,12 +66,12 @@ begin
 			stored_data <= (others => '0'); 
 		elsif rising_edge(clk) then
 			if data_in_edge = '1' then
-				stored_data <= data_tx_in & xor data_tx_in;
+				stored_data <= data_tx_in & (data_tx_in(7) xor data_tx_in(6) xor data_tx_in(5) xor data_tx_in(4) xor  data_tx_in(3) xor  data_tx_in(2) xor data_tx_in(1) xor data_tx_in(0));
 			elsif one_faulty_edge = '1' then
-				stored_data <= data_tx_in & xor data_tx_in;
+				stored_data <= data_tx_in & (data_tx_in(7) xor data_tx_in(6) xor data_tx_in(5) xor data_tx_in(4) xor  data_tx_in(3) xor  data_tx_in(2) xor data_tx_in(1) xor data_tx_in(0));
 				stored_data(8) <= not stored_data(8);
 			elsif two_faulty_edge = '1' then
-				stored_data <= data_tx_in & xor data_tx_in;
+				stored_data <= data_tx_in & (data_tx_in(7) xor data_tx_in(6) xor data_tx_in(5) xor data_tx_in(4) xor  data_tx_in(3) xor  data_tx_in(2) xor data_tx_in(1) xor data_tx_in(0));
 				stored_data(7) <= not stored_data(7);
 				stored_data(5) <= not stored_data(5);
 			end if;
