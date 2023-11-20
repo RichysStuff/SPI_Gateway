@@ -81,6 +81,7 @@ begin
 	
 	p_next_state : process(all)
 	begin
+		next_state <= current_state;
 		if current_state = idle then
 			if data_in_edge = '1' then
 				next_state <= set_cs_n;

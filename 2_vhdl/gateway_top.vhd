@@ -20,7 +20,7 @@ use ieee.numeric_std.all;
 library work;
 use work.gateway_pkg.all;
 
-entity gateway is
+entity gateway_top is
 	port(
 		clk_50 : in std_ulogic;
 		-- Input Peripherals
@@ -31,9 +31,8 @@ entity gateway is
 		hex1 : out std_ulogic_vector (6 downto 0);
 		hex2 : out std_ulogic_vector (6 downto 0);
 		hex3 : out std_ulogic_vector (6 downto 0);
-		hex4 : out std_ulogic_vector (6 downto 0);
-		hex5 : out std_ulogic_vector (6 downto 0);
-		ledr : out std_ulogic_vector (9 downto 0);
+
+
 
 		-- bus connections Input
 		spi_data_in : in std_logic;
@@ -48,9 +47,9 @@ entity gateway is
 	
 	-- Declarations
 	
-end entity gateway;
+end entity gateway_top;
 
-architecture struct of gateway is
+architecture struct of gateway_top is
 	
 	-- Internal signal declarations:
 	signal clk           : std_ulogic;
@@ -71,7 +70,6 @@ architecture struct of gateway is
 
 	-- buffer_block signals:
 	signal data_rx_ready : std_ulogic; -- 
-	signal buffer_rx : std_ulogic_vector(7 downto 0);  --
 	signal buffer_pattern : std_ulogic_vector(7 downto 0); 
 	signal buffer_rx_display : std_ulogic_vector(7 downto 0);
 	signal buffer_tx : std_ulogic_vector(7 downto 0);
@@ -89,7 +87,7 @@ begin
 		)
 		port map (
 			clk    => clk,
-			irst_n => key(1),
+			irst_n => key(0),
 			orst_n => rst_n,
 			orst   => open
 		);
@@ -151,7 +149,7 @@ begin
 
 		data_valid_in=>data_valid,
 		display_mode_in=>display_mode,
-        display_pattern_in=>pattern,
+        display_pattern_in=>buffer_pattern,
         display_rx_in=>buffer_rx_display,
 
 		seg_0_out=>hex0,
@@ -166,8 +164,8 @@ begin
 		clk => clk,
 		irst_n => rst_n,
 
-		data_rx_ready_in => data_valid, 
-		buffer_rx_in => buffer_rx,
+		data_rx_ready_in => data_received, 
+		buffer_rx_in => data_rx,
 		buffer_pattern_in => pattern, 
 		source_selection_in => select_tx_data_source,
 
