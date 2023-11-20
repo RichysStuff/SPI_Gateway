@@ -62,9 +62,9 @@ begin
 		end if;
 	end process p_sync;
 
-	send_data_out <= buttons_2(1);
-	send_one_faulty_bit_out <= buttons_2(2);
-	send_two_faulty_bits_out <= buttons_2(3);
+	send_data_out <= not buttons_2(1);
+	send_one_faulty_bit_out <= not buttons_2(2);
+	send_two_faulty_bits_out <= not buttons_2(3);
 
 	select_tx_data_source_out <= slide_switches_2(9);
 	display_mode_out <= slide_switches_2(8);
