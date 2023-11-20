@@ -3,10 +3,8 @@
 *.summary
 *.smsg
 *.done
-*.qpf
 *.qws
 *.qws.lock
-*.sof
 
 # Compilieren mit questa 
 *.opt
